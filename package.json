@@ -1,0 +1,19 @@
+{
+  "name": "testcafe-poc",
+  "version": "1.0.0",
+  "description": "POC TestCafe tooling on Salesforce org",
+  "main": "index.js",
+  "scripts": {
+    "test": "testcafe --screenshots \"screenshots/\" --screenshots-on-fails \"chrome:headless\",\"firefox:headless\" index.js"
+  },
+  "author": "Josh Peak (josh.peak@cloudsense.com)",
+  "license": "ISC",
+  "dependencies": {},
+  "devDependencies": {
+    "dotenv": "^5.0.0",
+    "eslint": "^4.17.0",
+    "eslint-plugin-testcafe": "^0.2.1",
+    "prettier": "^1.10.2",
+    "testcafe": "^0.18.6"
+  }
+}

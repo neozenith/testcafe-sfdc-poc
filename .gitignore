@@ -1,0 +1,7 @@
+/node_modules/*
+/screenshots/*
+.env
+
+
+# OSX Files
+.DS_Store
