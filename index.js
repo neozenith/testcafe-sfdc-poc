@@ -1,6 +1,6 @@
 'use strict';
 
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 
 const { Selector } = require('testcafe');
 
@@ -13,7 +13,7 @@ fixture('Test Org')
 			throw Error('TEST_ORG_PASSWORD environment variable not set in .env file');
 
 		await t
-			.typeText('#username', process.env.TEST_ORG_USERNAME)
+			.typeText('#usernames', process.env.TEST_ORG_USERNAME)
 			.typeText('#password', process.env.TEST_ORG_PASSWORD)
 			.click('#Login');
 	});
