@@ -1,0 +1,16 @@
+{
+	"parser": "espree",
+	"parserOptions": {
+			"ecmaFeatures": {},
+			"ecmaVersion": 2017
+	},
+	"env": {
+			"node": true,
+			"es6": true,
+			"mocha": true
+	},
+  "plugins": [
+    "testcafe"
+  ],
+  "extends": "plugin:testcafe/recommended"
+}

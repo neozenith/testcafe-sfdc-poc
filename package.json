@@ -4,7 +4,12 @@
   "description": "POC TestCafe tooling on Salesforce org",
   "main": "index.js",
   "scripts": {
-    "test": "testcafe --screenshots \"screenshots/\" --screenshots-on-fails \"chrome:headless\",\"firefox:headless\" index.js"
+    "test": "testcafe --screenshots \"screenshots/\" --screenshots-on-fails \"chrome:headless\",\"firefox:headless\" tests/*.js",
+    "test-all": "testcafe --screenshots \"screenshots/\" --screenshots-on-fails \"chrome\",\"firefox\" tests/*.js",
+    "test-chrome": "testcafe --screenshots \"screenshots/\" --screenshots-on-fails \"chrome\" tests/*.js",
+    "test-firefox": "testcafe --screenshots \"screenshots/\" --screenshots-on-fails \"firefox\" tests/*.js",
+    "test-chrome-headless": "testcafe --screenshots \"screenshots/\" --screenshots-on-fails \"chrome:headless\" tests/*.js",
+    "test-firefox-headless": "testcafe --screenshots \"screenshots/\" --screenshots-on-fails \"firefox:headless\" tests/*.js"
   },
   "author": "Josh Peak (josh.peak@cloudsense.com)",
   "license": "ISC",
