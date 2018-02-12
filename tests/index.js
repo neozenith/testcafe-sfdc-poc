@@ -44,11 +44,13 @@ fixture('Test Org')
 
 test('UI has Setup Link', async t => {
 	let setupLinkSelector;
-	if (uiExperience === 'classic') {
-		setupLinkSelector = await Selector('#setupLink');
-	}
-	if (uiExperience === 'lightning') {
-		setupLinkSelector = await Selector('div.setupGear');
+	switch (uiExperience) {
+		case 'classic':
+			setupLinkSelector = await Selector('#setupLink');
+			break;
+		case 'lightning':
+			setupLinkSelector = await Selector('div.setupGear');
+			break;
 	}
 	const setupLinkElement = await setupLinkSelector.with({ visibilityCheck: true })();
 	await t.expect(setupLinkSelector.exists).ok();
@@ -59,24 +61,26 @@ test('Validate Org ID', async t => {
 	let companyInfoLink;
 	let orgIdElement;
 	let orgIdSelector;
-	if (uiExperience === 'lightning') {
-		companyInfoLink = location.origin + '/one/one.app#/setup/CompanyProfileInfo/home';
-		await t.navigateTo(companyInfoLink);
-		orgIdSelector = await Selector('table.detailList')
-			.find('td.dataCol')
-			.withText(process.env.TEST_ORG_ID);
-	}
-	if (uiExperience === 'classic') {
-		companyInfoLink = location.origin + '/setup/forcecomHomepage.apexp';
-		await t
-			.navigateTo(companyInfoLink)
-			.click('#CompanyProfile_font')
-			.click('#CompanyProfileInfo_font');
 
-		orgIdSelector = await Selector('table.detailList')
-			.find('td.dataCol')
-			.withText(process.env.TEST_ORG_ID);
+	switch (uiExperience) {
+		case 'lightning':
+			companyInfoLink = location.origin + '/one/one.app#/setup/CompanyProfileInfo/home';
+			await t.navigateTo(companyInfoLink);
+			break;
+
+		case 'classic':
+			companyInfoLink = location.origin + '/setup/forcecomHomepage.apexp';
+			await t
+				.navigateTo(companyInfoLink)
+				.click('#CompanyProfile_font')
+				.click('#CompanyProfileInfo_font');
+
+			break;
 	}
+
+	orgIdSelector = await Selector('table.detailList')
+		.find('td.dataCol')
+		.withText(process.env.TEST_ORG_ID);
 
 	await t.expect(orgIdSelector.exists).ok();
 	await t.expect(orgIdSelector.innerText).eql(process.env.TEST_ORG_ID);
