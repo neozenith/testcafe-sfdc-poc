@@ -58,9 +58,11 @@ test('UI has Setup Link', async t => {
 });
 
 test('Validate Org ID', async t => {
+	if (!process.env.TEST_ORG_ID)
+		throw Error('TEST_ORG_ID environment variable not set in .env file');
+
 	const location = await t.eval(() => window.location);
 	let companyInfoLink;
-	let orgIdElement;
 	let orgIdSelector;
 
 	switch (t.ctx.uiExperience) {
