@@ -4,7 +4,6 @@ require('dotenv').config();
 
 const { Selector } = require('testcafe');
 
-let uiExperience = null;
 const landingPages = {
 	classic: ['/home/home.jsp', '/setup/forcecomHomepage.apexp'],
 	lightning: ['/one/one.app']
@@ -29,22 +28,23 @@ fixture('Test Org')
 		// Await element in DOM and visibility check
 		const [classicHeaderElement, lightningHeaderElement] = await Promise.all([
 			classicHeader.with({ visibilityCheck: true })(),
-			lightningHeader.with({ visibilityCheck: true })()
+			lightningHeader.with({ visibilityCheck: true, timeout: 60000 })()
 		]);
 
+		t.ctx.uiExperience = null;
 		if (lightningHeaderElement) {
-			uiExperience = 'lightning';
+			t.ctx.uiExperience = 'lightning';
 		}
 
-		if (classicHeaderElement) {
-			uiExperience = 'classic';
+		if (classicHeaderElement && classicHeader.exists) {
+			t.ctx.uiExperience = 'classic';
 		}
-		await t.expect(uiExperience).notEql(null, 'Unknown UI Experience or failed to login');
+		await t.expect(t.ctx.uiExperience).notEql(null, 'Unknown UI Experience or failed to login');
 	});
 
 test('UI has Setup Link', async t => {
 	let setupLinkSelector;
-	switch (uiExperience) {
+	switch (t.ctx.uiExperience) {
 		case 'classic':
 			setupLinkSelector = await Selector('#setupLink');
 			break;
@@ -52,6 +52,7 @@ test('UI has Setup Link', async t => {
 			setupLinkSelector = await Selector('div.setupGear');
 			break;
 	}
+
 	const setupLinkElement = await setupLinkSelector.with({ visibilityCheck: true })();
 	await t.expect(setupLinkSelector.exists).ok();
 });
@@ -62,7 +63,7 @@ test('Validate Org ID', async t => {
 	let orgIdElement;
 	let orgIdSelector;
 
-	switch (uiExperience) {
+	switch (t.ctx.uiExperience) {
 		case 'lightning':
 			companyInfoLink = location.origin + '/one/one.app#/setup/CompanyProfileInfo/home';
 			await t.navigateTo(companyInfoLink);
