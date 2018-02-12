@@ -23,8 +23,8 @@ fixture('Test Org')
 			.typeText('#password', process.env.TEST_ORG_PASSWORD)
 			.click('#Login');
 
-		const classicHeader = await Selector('#phHeader');
-		const lightningHeader = await Selector('#oneHeader');
+		const classicHeader = Selector('#phHeader');
+		const lightningHeader = Selector('#oneHeader');
 
 		// Await element in DOM and visibility check
 		const [classicHeaderElement, lightningHeaderElement] = await Promise.all([
@@ -39,11 +39,10 @@ fixture('Test Org')
 		if (classicHeaderElement) {
 			uiExperience = 'classic';
 		}
+		await t.expect(uiExperience).notEql(null, 'Unknown UI Experience or failed to login');
 	});
 
 test('UI has Setup Link', async t => {
-	await t.expect(uiExperience).notEql(null, 'Unknown UI Experience or failed to login');
-
 	let setupLinkSelector;
 	if (uiExperience === 'classic') {
 		setupLinkSelector = await Selector('#setupLink');
@@ -55,28 +54,30 @@ test('UI has Setup Link', async t => {
 	await t.expect(setupLinkSelector.exists).ok();
 });
 
-test.skip('Validate Org ID', async t => {
-	await t.expect(uiExperience).notEql(null, 'Unknown UI Experience or failed to login');
-
+test('Validate Org ID', async t => {
 	const location = await t.eval(() => window.location);
 	let companyInfoLink;
 	let orgIdElement;
+	let orgIdSelector;
 	if (uiExperience === 'lightning') {
-		companyInfoLink = location.hostname + '/one/one.app#/setup/CompanyProfileInfo/home';
+		companyInfoLink = location.origin + '/one/one.app#/setup/CompanyProfileInfo/home';
 		await t.navigateTo(companyInfoLink);
+		orgIdSelector = await Selector('table.detailList')
+			.find('td.dataCol')
+			.withText(process.env.TEST_ORG_ID);
 	}
 	if (uiExperience === 'classic') {
-		companyInfoLink = location.hostname + '/setup/forcecomHomepage.apexp';
+		companyInfoLink = location.origin + '/setup/forcecomHomepage.apexp';
 		await t
 			.navigateTo(companyInfoLink)
 			.click('#CompanyProfile_font')
 			.click('#CompanyProfileInfo_font');
 
-		orgIdElement = Selector('table.detailList');
+		orgIdSelector = await Selector('table.detailList')
+			.find('td.dataCol')
+			.withText(process.env.TEST_ORG_ID);
 	}
 
-	console.log(orgIdElement);
-
-	await t.expect(ordIdElement.exists).ok();
-	await t.expect(orgIdElement.innerText).eql(process.env.TEST_ORG_ID);
+	await t.expect(orgIdSelector.exists).ok();
+	await t.expect(orgIdSelector.innerText).eql(process.env.TEST_ORG_ID);
 });
