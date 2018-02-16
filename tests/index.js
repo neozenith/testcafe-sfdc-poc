@@ -27,19 +27,28 @@ fixture('Test Org')
 		//   t.ctx.uiExperience = 'lightning';
 		// }
 
-		const classicHeader = await Selector('#phHeader');
-		const lightningHeader = await Selector('#oneHeader');
+		const classicHeader = await Selector('#phHeader').with({ visibilityCheck: true });
+		const classicHeaderElement = await classicHeader();
+		const lightningHeader = await Selector('#oneHeader').with({ visibilityCheck: true });
+		const lightningHeaderElement = await lightningHeader();
 
-		if (lightningHeader.exists) {
-			t.ctx.uiExperience = 'lightning';
-		}
-
-		if (classicHeader.exists) {
+		if (classicHeaderElement) {
 			t.ctx.uiExperience = 'classic';
 		}
 
-		await t.expect(t.ctx.uiExperience).ok('Unknown UI Experience or failed to login');
-		console.log(t.ctx);
+		if (lightningHeaderElement) {
+			t.ctx.uiExperience = 'lightning';
+		}
+
+		const validUIExperiences = ['classic', 'lightning'];
+
+		// Flip the 'contains' logic since uiExperience could validly be one of two values.
+		await t
+			.expect(validUIExperiences)
+			.contains(
+				t.ctx.uiExperience,
+				'Unknown UI Experience or failed to login. Test context = ' + JSON.stringify(t.ctx)
+			);
 	});
 
 test.only('UI has Setup Link', async t => {
