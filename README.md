@@ -1,5 +1,9 @@
 # TestCafe POC
 
+<a href="https://github.com/DevExpress/testcafe">
+    <img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg">
+</a>
+
 This is a proof of concept to see how well [TestCafe](https://devexpress.github.io/testcafe/)
 can handle UI testing a Salesforce Org.
 
