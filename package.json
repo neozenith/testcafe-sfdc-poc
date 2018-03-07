@@ -13,12 +13,13 @@
   },
   "author": "Josh Peak (josh.peak@cloudsense.com)",
   "license": "ISC",
-  "dependencies": {},
+  "dependencies": {
+    "testcafe": "^0.19.1-dev20180305"
+  },
   "devDependencies": {
-    "dotenv": "^5.0.0",
-    "eslint": "^4.17.0",
-    "eslint-plugin-testcafe": "^0.2.1",
-    "prettier": "^1.10.2",
-    "testcafe": "^0.18.6"
+    "dotenv": "5.x",
+    "eslint": "4.x",
+    "eslint-plugin-testcafe": "0.x",
+    "prettier": "1.x"
   }
 }
